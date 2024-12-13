@@ -24,7 +24,7 @@
   <nav>
     <div>
       <a href="/">Home</a>
-      <a href="/lijstje">Lijstje</a>
+      <a href="/Lijstje">Lijstje</a>
     </div>
   </nav>
   
