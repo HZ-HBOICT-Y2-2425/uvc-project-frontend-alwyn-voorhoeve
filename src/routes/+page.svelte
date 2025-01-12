@@ -3,7 +3,14 @@
   import { goto } from '$app/navigation'; 
   import '../app.css'; 
 
-  let Recipes = [];
+  type Recipe = {
+    id: number;
+    Name: string;
+    Ingredients: string;
+    Description: string;
+  };
+
+  let Recipes: Recipe[] = [];
   let newRecipe = { Name: '', Ingredients: '', Description: '' };
 
   onMount(async () => {
@@ -23,7 +30,7 @@
     }
   }
 
-  const openRecipe = (id: string) => {
+  const openRecipe = (id: number) => {
     goto(`/recipes/${id}`);
   };
 
@@ -69,7 +76,7 @@
     }
   }
 
-  async function editRecipe(id: number, updatedRecipe) {
+  async function editRecipe(id: number, updatedRecipe: Recipe) {
     try {
       const response = await fetch(`http://localhost:3011/recipes/${id}`, {
         method: 'PUT',
@@ -95,10 +102,10 @@
 
 <main class="bg-gray-100 p-4 sm:p-6 min-h-screen">
   <section>
-    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Recipes</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6" >Recipes</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 ">
       {#each Recipes as recipe}
-        <div class="bg-white rounded-md shadow-md p-4 text-center">
+        <div class="bg-white rounded-md shadow-md p-4 text-center border border-black rounded-md p-4 sm:p-6">
           <h3 class="text-lg font-bold">{recipe.Name}</h3>
           <button 
             class="bg-blue-600 text-white px-2 py-1 rounded-md hover:bg-blue-700 mr-2"
@@ -118,31 +125,31 @@
   </section>
 
   <section class="mt-6">
-    <h2 class="text-xl sm:text-2xl font-bold mb-4">Add New Recipe</h2>
-    <div class="bg-white p-4 sm:p-6 rounded-md shadow-md">
+    <h2 class="text-xl sm:text-2xl font-bold mb-4 ">Add New Recipe</h2>
+    <div class="bg-white p-4 sm:p-6 rounded-md shadow-md border border-black rounded-md p-4 sm:p-6">
       <div class="mb-4">
-        <label class="block text-gray-700 font-semibold mb-2">Name:</label>
+        <label class="block text-black font-semibold mb-2">Name:</label>
         <input
           type="text"
           bind:value={newRecipe.Name}
           placeholder="Recipe Name"
-          class="w-full p-2 border border-gray-300 rounded-md"
+          class="w-full p-2 border border-black rounded-md "
         />
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700 font-semibold mb-2">Ingredients:</label>
+        <label class="block text-black font-semibold mb-2">Ingredients:</label>
         <textarea
           bind:value={newRecipe.Ingredients}
           placeholder="Ingredients"
-          class="w-full p-2 border border-gray-300 rounded-md"
+          class="w-full p-2 border border-black rounded-md"
         ></textarea>
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700 font-semibold mb-2">Description:</label>
+        <label class="block text-black font-semibold mb-2">Description:</label>
         <textarea
           bind:value={newRecipe.Description}
           placeholder="Description"
-          class="w-full p-2 border border-gray-300 rounded-md"
+          class="w-full p-2 border border-black rounded-md"
         ></textarea>
       </div>
       <button

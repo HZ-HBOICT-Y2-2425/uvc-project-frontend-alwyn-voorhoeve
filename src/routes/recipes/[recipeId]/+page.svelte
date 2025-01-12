@@ -3,8 +3,14 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
 
-  let recipeId;
-  let recipe = {
+  let recipeId: number;
+  interface Recipe {
+    Name: string;
+    Ingredients: string[];
+    Description: string;
+  }
+
+  let recipe: Recipe = {
     Name: '',
     Ingredients: [],
     Description: ''
@@ -21,7 +27,7 @@
       if (!response.ok) throw new Error('Error fetching recipe');
       const data = await response.json();
       recipe = data;
-    } catch (error) {
+    } catch (error: any) {
       errorMessage = 'Error fetching recipe: ' + error.message;
     }
   }
@@ -53,20 +59,22 @@
       const data = await response.json();
 
       successMessage = 'Recipe updated successfully!';
-      // After successful update, redirect to the recipe detail page
-      goto(`/recipes/${data.id}`);  // Redirect to the updated recipe page
+      goto(`/recipes/${data.id}`);  
     } catch (error) {
-      errorMessage = 'Error updating recipe: ' + error.message;
+      if (error instanceof Error) {
+        errorMessage = 'Error updating recipe: ' + error.message;
+      } else {
+        errorMessage = 'Error updating recipe';
+      }
     }
   }
 
   // Add new ingredient (by name) to the recipe
   function addIngredientToRecipe() {
     if (newIngredient.trim()) {
-      // Check if ingredient already exists in the recipe's list
       if (!recipe.Ingredients.includes(newIngredient.trim())) {
         recipe.Ingredients.push(newIngredient.trim());
-        newIngredient = ''; // Clear input field
+        newIngredient = ''; 
       }
     }
   }
@@ -80,21 +88,33 @@
 
       if (!response.ok) throw new Error('Error deleting recipe');
       successMessage = 'Recipe deleted successfully!';
-      // After deletion, redirect to the home page or any other desired page
-      goto('/');  // You can change this to redirect to a different route
+      goto('/');  
     } catch (error) {
-      errorMessage = 'Error deleting recipe: ' + error.message;
+      if (error instanceof Error) {
+        errorMessage = 'Error deleting recipe: ' + error.message;
+      } else {
+        errorMessage = 'Error deleting recipe';
+      }
     }
   }
 
   // Initialize the page with the recipe data
   onMount(() => {
-    recipeId = parseInt(window.location.pathname.split('/').pop(), 10); // Get the recipeId from the URL
+    const pathname = window.location.pathname;
+    if (pathname) {
+      recipeId = parseInt(pathname.split('/').pop() || '', 10); 
+    }
     fetchRecipe();
   });
 </script>
 
 <main class="p-8 bg-gray-50 min-h-screen">
+  <button
+    class="mt-6 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+    on:click={() => goto('/')}
+  >
+    Back
+  </button>
   <h1 class="text-3xl font-semibold text-center mb-8">Recipe Details</h1>
 
   {#if errorMessage}

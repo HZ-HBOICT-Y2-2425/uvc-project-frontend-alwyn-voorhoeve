@@ -4,7 +4,7 @@
   
   <style>
     nav {
-      background-color: #ffffff;
+      background-color: #64AF64;
       padding: 1rem;
       display: flex;
       justify-content: space-between;
@@ -14,7 +14,7 @@
     a {
       text-decoration: none;
       margin: 0 1rem;
-      color: #333;
+      color: #000000;
     }
     a:hover {
       text-decoration: underline;
